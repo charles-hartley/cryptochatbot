@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoAI - Your Smart Trading Companion</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'bot/style.css' %}">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+</head>
+    <header>
+        <nav class="navbar">
+          <div class="nav-item"><i class="fas fa-chart-line"></i> Real-time</div>
+          <div class="nav-item"><i class="fas fa-brain"></i> Insights</div>
+          <div class="nav-item"><i class="fas fa-shield-alt"></i> Risk</div>
+          <div class="nav-item"><i class="fas fa-comments"></i> Personality</div>
+        </nav>
+    </header>      
+<body>
+    <div class="animated-bg"></div>
+
+    <!-- Home Section -->
+    <section class="home" id="home">
+        <div class="logo-container">
+            <div class="logo-img">
+                <i class="fas fa-robot"></i>
+            </div>
+        </div>
+
+        <div class="hero-content">
+            <h1>CryptoAI</h1>
+            <p>
+                Your intelligent crypto companion powered by advanced AI. Get real-time market insights, 
+                personalized investment advice, and brutally honest takes on your favorite cryptocurrencies. 
+                Whether you're a seasoned trader or just starting your crypto journey, our AI delivers 
+                smart analysis with a touch of personality.
+            </p>
+
+            <a href="#" class="cta-button" onclick="startChat()">
+                <i class="fas fa-comments"></i>
+                Start Chatting
+            </a>
+        </div>
+    </section>
+
+    <!-- Chat Section -->
+    <section class="chat-section" id="chat-section">
+        <div class="chat-header">
+            <div class="header-logo">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="header-info">
+                <h2>CryptoAI Assistant</h2>
+                <div class="status">
+                    <span class="status-indicator">Online & Ready</span>
+                    <div class="user-stats" id="user-stats">
+                        <span class="message-count">Messages: 0</span>
+                        <span class="session-time">Session: 0m</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-controls">
+                <button class="control-btn" onclick="clearChat()" title="Clear Chat">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button class="control-btn" onclick="toggleDarkMode()" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chatbox" id="chatbox">
+                <!-- Messages will appear here dynamically -->
+            </div>
+
+            <div class="input-section">
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <input type="text" id="userInput" placeholder="Ask me about Bitcoin, Ethereum, or any crypto..." autocomplete="off">
+                        <div class="input-suggestions" id="input-suggestions"></div>
+                    </div>
+                    <button class="send-button" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Send</span>
+                    </button>
+                </div>
+                
+                <!-- Enhanced Quick Actions with crypto-specific styling -->
+                <div class="quick-actions">
+                    <div class="quick-action" data-crypto="bitcoin" onclick="quickMessage('What about Bitcoin?')">
+                        <i class="fab fa-bitcoin"></i> Bitcoin Analysis
+                    </div>
+                    <div class="quick-action" data-crypto="ethereum" onclick="quickMessage('Tell me about Ethereum')">
+                        <i class="fab fa-ethereum"></i> Ethereum Insights
+                    </div>
+                    <div class="quick-action" data-crypto="solana" onclick="quickMessage('Should I buy Solana?')">
+                        <i class="fas fa-coins"></i> Solana Advice
+                    </div>
+                    <div class="quick-action" onclick="quickMessage('What\'s the market trend?')">
+                        <i class="fas fa-chart-line"></i> Market Overview
+                    </div>
+                    <div class="quick-action" onclick="quickMessage('Portfolio check')">
+                        <i class="fas fa-briefcase"></i> My Portfolio
+                    </div>
+                    <div class="quick-action" onclick="quickMessage('GM!')">
+                        <i class="fas fa-sun"></i> Say GM
+                    </div>
+                    <div class="quick-action" onclick="quickMessage('Compare Bitcoin vs Ethereum')">
+                        <i class="fas fa-balance-scale"></i> Compare Coins
+                    </div>
+                    <div class="quick-action" onclick="quickMessage('Will Dogecoin moon?')">
+                        <i class="fas fa-rocket"></i> Price Prediction
+                    </div>
+                </div>
+                
+                <!-- Typing indicator enhancement -->
+                <div class="typing-status" id="typing-status" style="display: none;">
+                    <span class="typing-text">CryptoAI is analyzing the markets...</span>
+                    <div class="typing-animation">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Error Toast -->
+    <div class="toast-container" id="toast-container">
+        <div class="error-toast" id="error-toast">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="error-message">Connection error. Please try again.</span>
+            <button class="toast-close" onclick="hideErrorToast()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Success Toast -->
+        <div class="success-toast" id="success-toast">
+            <i class="fas fa-check-circle"></i>
+            <span id="success-message">Operation successful!</span>
+            <button class="toast-close" onclick="hideSuccessToast()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay for initial setup -->
+    <div class="loading-overlay" id="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Initializing CryptoAI...</p>
+        </div>
+    </div>
+
+    <!-- Enhanced JavaScript with better integration -->
+    <script src="{% static 'bot/script.js' %}"></script>
+    
+   
+</body>
+</html>

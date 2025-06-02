@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: cryptoroast
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn cryptoroast.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: cryptoroast.settings
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: SECRET_KEY
+        value: your-super-secret-key
+      - key: ALLOWED_HOSTS
+        value: cryptoroast.onrender.com
